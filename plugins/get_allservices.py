@@ -68,17 +68,17 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
             else:
                 pass
 
-    print ("\n" + ("=" * 51) + "\nUNKNOWN/NON-BASELINED TYPE 2 SERVICES)\n" + ("=" * 51))
-    for sname, ltime, ipath, dispname in izip(autostart_dict['ServiceName'], autostart_dict['WriteTime'], autostart_dict['ImagePath'], autostart_dict['DisplayName']):
-        for name in service_baseline:
-            if sname.lower() in name.lower():
-                pass
-            else:
-                print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
+    print ("\n" + ("=" * 51) + "\nALL TYPE 2 SERVICES\n" + ("=" * 51))
+    for sname, ltime, ipath, dispname in izip(autostart_dict['ServiceName'], autostart_dict['WriteTime'], autostart_dict['ImagePath'], autostart_dict['DisplayName']):   
+        print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
 
-    print ("\n" + ("=" * 51) + "\nTYPE 2 SERVICES NOT IN SYSTEM32\n" + ("=" * 51))
-    for sname, ltime, ipath, dispname in izip(autostart_dict['ServiceName'], autostart_dict['WriteTime'], autostart_dict['ImagePath'], autostart_dict['DisplayName']):
-        if "system32" not in ipath.lower():
-            print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
-        else:
-            pass
+    
+    print ("\n" + ("=" * 51) + "\nALL TYPE 3 SERVICES\n" + ("=" * 51))
+    for sname, ltime, ipath, dispname in izip(loadondemand_dict['ServiceName'], loadondemand_dict['WriteTime'], loadondemand_dict['ImagePath'], loadondemand_dict['DisplayName']):   
+        print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
+
+    
+    print ("\n" + ("=" * 51) + "\nALL TYPE 0 SERVICES\n" + ("=" * 51))
+    for sname, ltime, ipath, dispname in izip(bootloader_dict['ServiceName'], bootloader_dict['WriteTime'], bootloader_dict['ImagePath'], bootloader_dict['DisplayName']):   
+        print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
+

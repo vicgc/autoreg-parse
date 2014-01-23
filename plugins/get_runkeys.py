@@ -9,12 +9,13 @@ def getPlugin(reg_soft, reg_nt, reg_sys):
                      "Microsoft\\Windows\\CurrentVersion\\RunOnce",
                      "Microsoft\\Windows\\CurrentVersion\\RunOnceEx",
                      "Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run",
+                     "Microsoft\\Windows\\CurrentVersion\\RunServicesOnce"
                      "Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run",
                      "Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\RunOnce"]
 
     ntuser_run_list = ["Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                        "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce",
-                       "Software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce",
+                       "Software\\Microsoft\\Windows\\CurrentVersion\\RunServices",
                        "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run"]
 
     try:
