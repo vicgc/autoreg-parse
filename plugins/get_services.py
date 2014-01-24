@@ -14,6 +14,7 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
     autostart_dict = defaultdict(list)
     loadondemand_dict = defaultdict(list)
     bootloader_dict = defaultdict(list)
+    autostart_dict = defaultdict(list)
     
     service_baseline = []
     baseline = open("plugins/service_baseline.txt", 'r').read()
@@ -33,6 +34,7 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
                         try:
                             display_name = k.value("DisplayName").value()
                             image_path = k.value("ImagePath").value()
+                            error_control = k.value("ErrorControl").value()
                         except:
                             display_name = "???"
                             image_path = "No Image Path Found!"
@@ -40,6 +42,7 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
                         autostart_dict['WriteTime'].append(k.timestamp())
                         autostart_dict['ImagePath'].append(image_path.lower())
                         autostart_dict['DisplayName'].append(display_name)
+                        autostart_dict['ErrorControl'].append(error_control)
                     # 0x3 (Load on demand) = SCM - Not start until the user starts it.
                     elif service_start_code == "3": 
                         try:
@@ -64,7 +67,7 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
                         bootloader_dict['ServiceName'].append(k.name().lower())
                         bootloader_dict['WriteTime'].append(k.timestamp())
                         bootloader_dict['ImagePath'].append(image_path.lower())
-                        bootloader_dict['DisplayName'].append(display_name)             
+                        bootloader_dict['DisplayName'].append(display_name)           
             else:
                 pass
 
@@ -76,9 +79,30 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
             else:
                 print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
 
-    print ("\n" + ("=" * 51) + "\nTYPE 2 SERVICES NOT IN SYSTEM32\n" + ("=" * 51))
+    print ("\n" + ("=" * 51) + "\nSTART TYPE 2 SERVICES NOT IN SYSTEM32\n" + ("=" * 51))
     for sname, ltime, ipath, dispname in izip(autostart_dict['ServiceName'], autostart_dict['WriteTime'], autostart_dict['ImagePath'], autostart_dict['DisplayName']):
         if "system32" not in ipath.lower():
             print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, sname, ipath.encode('ascii', 'ignore'), ltime)
         else:
             pass
+
+    print ("\n" + ("=" * 51) + "\nSTART TYPE 2 SERVICES WITH ERROR CONTROL SET TO 0x0\n" + ("=" * 51))
+    for sname, ltime, ipath, dispname, error in izip(autostart_dict['ServiceName'], \
+                                                     autostart_dict['WriteTime'], \
+                                                     autostart_dict['ImagePath'], \
+                                                     autostart_dict['DisplayName'], \
+                                                     autostart_dict['ErrorControl']):
+        if error == int(0):
+            print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, \
+                                                                                        sname, \
+                                                                                        ipath.encode('ascii', 'ignore'), \
+                                                                                        ltime)
+        else:
+            pass
+
+
+
+
+
+
+
