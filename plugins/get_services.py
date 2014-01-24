@@ -92,6 +92,8 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
                                                      autostart_dict['ImagePath'], \
                                                      autostart_dict['DisplayName'], \
                                                      autostart_dict['ErrorControl']):
+        # 0x0 Ignore. Startup proceeds with no warning messages.
+        # This isn't as common with legit services. Usually it's 0x1
         if error == int(0):
             print 'Disp: {0:<10}\nName: {1:<10}\nPath: {2:<10}\nTime: {3}\n'.format(dispname, \
                                                                                         sname, \
