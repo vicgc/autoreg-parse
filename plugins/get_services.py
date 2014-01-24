@@ -1,5 +1,5 @@
 from Registry import Registry
-from get_controlset import getControlSet
+from controlset import getControlSet
 from collections import defaultdict
 from itertools import izip
 
