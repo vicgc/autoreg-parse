@@ -1,82 +1,50 @@
 from Registry import Registry
-from helperFunctions import jsonOutput, outputRender, getControlSet
+from helperFunctions import jsonOutput, outputRender, getControlSet, getComputerName
 import time
-from collections import defaultdict
-from itertools import izip
+
+objects_list = []
+header = "System Information"
+
 
 def getPlugin(reg_soft, reg_sys, reg_nt=''):
-
-    os_dict = {}
-    sid_dict = defaultdict(list)
-    username_dict = defaultdict(list)
-    
-    k = reg_soft.open("Microsoft\\Windows NT\\CurrentVersion")
-
-    try:
-        for v in k.values():
-            if v.name() == "ProductName":
-                os_dict['ProductName'] = v.value()
-            if v.name() == "EditionID":
-                os_dict['EditionID'] = v.value()
-            if v.name() == "CurrentBuild":
-                os_dict['CurrentBuild'] = v.value()
-            if v.name() == "CurrentVersion":
-                os_dict['CurrentVersion'] = v.value()
-            if v.name() == "InstallDate":
-                os_dict['InstallDate'] = time.strftime('%a %b %d %H:%M:%S %Y (UTC)', time.gmtime(v.value()))
-            else:
-                pass
-
-    except Registry.RegistryKeyNotFoundException as e:
-        pass
-    
-    
+    computer_name = getComputerName(reg_sys)
     current = getControlSet(reg_sys)
+    timezone_key = [current + "\\Control\\TimeZoneInformation"]
+    sysinfo_key = ["Microsoft\\Windows NT\\CurrentVersion"]
     
-    computerName = reg_sys.open("%s\\Control\\ComputerName\\ComputerName" % (current))
 
-    try:
-        for v in computerName.values():
-            if v.name() == "ComputerName":
-                os_dict["ComputerName"] = v.value()
+    for k in timezone_key:
+        key = reg_sys.open(k)
+        for v in key.values():
+            if "StandardName" in v.name():
+                time_zone = v.value()
             else:
                 pass
 
-    except Registry.RegistryKeyNotFoundException as e:
-        pass
-
-    timeZone = reg_sys.open("%s\\Control\\TimeZoneInformation" % (current))
-
-    try:
-        for v in timeZone.values():
-            if v.name() == "StandardName":
-                os_dict["TimeZoneName"] = v.value()
+    for k in sysinfo_key:
+        key = reg_soft.open(k)
+        for v in key.values():
+            if "ProductName" in v.name():
+                product_name = v.value()
+            if "CurrentVersion" in v.name():
+                current_version = v.value()
+            if "CurrentBuildNumber" in v.name():
+                current_build = v.value()
+            if "CSDVersion" in v.name():
+                csd_version = v.value()
+            if "InstallDate" in v.name():
+                install_date = time.strftime('%a %b %d %H:%M:%S %Y (UTC)', time.gmtime(v.value()))
             else:
                 pass
 
-    except Registry.RegistryKeyNotFoundException as e:
-        pass
+        objects_list.append(jsonOutput(header, \
+                            key_item = product_name, \
+                            value_item1 = current_version, \
+                            value_item2 = current_build, \
+                            value_item3 = csd_version, \
+                            value_item4 = install_date, \
+                            value_item5 = time_zone, \
+                            lastwrite_time = "???", \
+                            sys_name = computer_name))
 
-    try:
-        profileList = reg_soft.open("Microsoft\\Windows NT\\CurrentVersion\\ProfileList")
-
-        for sid in profileList.subkeys():
-            sid_dict['SIDs'].append(sid.name())
-            sid_dict['UserNames'].append(sid.value("ProfileImagePath").value())
-    except Registry.RegistryKeyNotFoundException as e:
-        pass
-
-    '''
-    Output.....
-    '''
-    print ("\n" + ("=" * 51) + "\nSYSTEM INFORMATION\n" + ("=" * 51))
-    print "Computer Name: " + os_dict['ComputerName']
-    print "Operating System: " + os_dict['ProductName'], os_dict['CurrentVersion']
-    print "Install Date: " + os_dict['InstallDate']
-    print "Time Zone: " + os_dict['TimeZoneName'] + "\n"
-    print "Usernames:"
-    for u, s in izip(sid_dict["SIDs"], sid_dict["UserNames"]):
-        print 'SID: {0:<10}\nUsername: {1:<10}'.format(u, \
-            str(s.replace("%SystemDrive%\\Documents and Settings\\", \
-            "").replace("%systemroot%\\system32\\config\\", "")))
-    print "\n"
+    outputRender(objects_list)
