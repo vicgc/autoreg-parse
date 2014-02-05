@@ -72,8 +72,35 @@ Name: BthServ
 ImgPath: %SystemRoot%\system32\svchost.exe -k bthsvcs
 SrvDLL: %SystemRoot%\System32\bthserv.dll
 
-This makes things very simple. You can run all of your plugins against 100 systems, 
-and then simply process the raw JSON data as you see fit.
+
+###############################################################
+#
+# Cool JSON Stuff
+#
+###############################################################
+
+
+So you have a team? Why not host the dump on a wiki? Then you can add comments to the wiki?
+
+
+
+>>> import requests
+>>> r = requests.get('http://192.168.1.4:8000/services.json')
+>>> for data in r.json():
+...     if "Services" in data['Title']:
+...             if "2" in str(data['Value1']):
+...                     print 'Name: %s' % (data['Name'])
+...     else:
+...             pass
+
+Name: Eventlog
+Name: helpsvc
+Name: LanmanServer
+Name: lanmanworkstation
+Name: LmHosts
+Name: NPF
+Name: ParVdm
+Name: PlugPlay
 
 
 ###############################################################
