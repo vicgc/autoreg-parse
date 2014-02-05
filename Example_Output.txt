@@ -32,35 +32,37 @@ autoreg-parse.py -p services -sys SYSTEM
 What? That looks confusing... How can I parse this? I'm not a coder... I'm not either, but it's easy...
 
 import json
-
 print ("\n" + ("=" * 51) + "\nType 2 Auto-start Services\n" + ("=" * 51))
-
 with open('services.json', 'r') as f:
 	data = json.load(f)
 	for tags in data:
 		if "Services" in tags['Title']:
 			if "2" in str(tags['Value1']):
-				print 'Service Name: %s\nImage Path: %s\nServiceDLL: %s\n' % (tags['Name'], tags['Value2'], tags['Value5'])
+				print 'Name: %s\nImagePath: %s\nServiceDLL: %s\n' % (tags['Name'], \
+																	 tags['Value2'], \
+																	 tags['Value5'])
 		else:
 			pass
 
 ===================================================
 Type 2 Auto-start Services
 ===================================================
-Service Name: AppMgmt
-Image Path: %SystemRoot%\system32\svchost.exe -k netsvcs
+Name: AppMgmt
+ImagePath: %SystemRoot%\system32\svchost.exe -k netsvcs
 ServiceDLL: c:\windows\system32\secur16.dll
 
-Service Name: AudioSrv
-Image Path: %SystemRoot%\System32\svchost.exe -k netsvcs
+Name: AudioSrv
+ImagePath: %SystemRoot%\System32\svchost.exe -k netsvcs
 ServiceDLL: %SystemRoot%\System32\audiosrv.dll
 
-Service Name: Browser
-Image Path: %SystemRoot%\system32\svchost.exe -k netsvcs
+Name: Browser
+ImagePath: %SystemRoot%\system32\svchost.exe -k netsvcs
 ServiceDLL: %SystemRoot%\System32\browser.dll
 
-This makes things very simple. You can run all of your plugins against 100 systems, and then simply process the raw JSON data as you see fit.
+This makes things very simple. You can run all of your plugins against 100 systems, 
+and then simply process the raw JSON data as you see fit.
 
-So no more trying to read other people's output. It's simple.... Customize it yourself with 10 - 20 lines of code. I'll also post some of the ones that I find most useful.
+So no more trying to read other people's output. It's simple.... 
+Customize it yourself with 10 - 20 lines of code. I'll also post some of the ones that I find most useful.
 
 
