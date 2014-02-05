@@ -1,114 +1,66 @@
-Auto Registry Parser now supports a plugin framework. Here are some examples:
+The output will be JSON. I'm updating the plugins now. Then we will further process the JSON output files to fit your needs.
 
-autoreg-parse.py -p runkeys -soft goog/software -nt goog/NTUSER.DAT -sys goog/system 
+I haven't finalized the tags (Title, Name, Value1, etc.) yet.
 
-===================================================
-TRADITIONAL "RUN" KEYS
-===================================================
-Key: BluetoothAuthenticationAgent
-Value: rundll32.exe bthprops.cpl,,BluetoothAuthenticationAgent
-RegPath: Microsoft\Windows\CurrentVersion\Run
+autoreg-parse.py -p services -sys SYSTEM
 
-Key: VMware User Process
-Value: "C:\Program Files\VMware\VMware Tools\vmtoolsd.exe" -n vmusr
-RegPath: Microsoft\Windows\CurrentVersion\Run
-
-Key: LogMeIn GUI
-Value: "C:\Program Files\LogMeIn\x86\LogMeInSystray.exe"
-RegPath: Microsoft\Windows\CurrentVersion\Run
-
-
-
-python autoreg-parse.py -p services -sys goog/system 
-
-Hint...the malware is a service....
-
-===================================================
-UNKNOWN/NON-BASELINED TYPE 2 SERVICES)
-===================================================
-Disp: Google Update Service (gupdate)
-Name: . etadpug
-Path: "c:\program files\google\desktop\install\{0f91adea-a35c-b700-d36c-83378aa58eea}\   \   \\{0f91adea-a35c-b700-d36c-83378aa58eea}\googleupdate.exe" <
-Time: 2013-10-17 11:46:43.680927
-
-
-===================================================
-TYPE 2 SERVICES NOT IN SYSTEM32
-===================================================
-Disp: HWDeviceService.exe
-Name: hwdeviceservice.exe
-Path: "c:\documents and settings\all users\application data\datacardservice\hwdeviceservice.exe" -/service
-Time: 2013-10-17 04:06:56.718750
-
-Disp: LMIGuardianSvc
-Name: lmiguardiansvc
-Path: "c:\program files\logmein\x86\lmiguardiansvc.exe"
-Time: 2013-10-17 04:06:56.734373
-
-Disp: LogMeIn Kernel Information Provider
-Name: lmiinfo   
-Path: \??\c:\program files\logmein\x86\rainfo.sys
-Time: 2013-10-17 04:06:56.734373
-
-Disp: LogMeIn Maintenance Service
-Name: lmimaint  
-Path: "c:\program files\logmein\x86\ramaint.exe"
-Time: 2013-10-17 04:06:56.734373
-
-Disp: LogMeIn   
-Name: logmein   
-Path: "c:\program files\logmein\x86\logmein.exe"
-Time: 2013-10-17 04:06:56.734373
-
-Disp: ???       
-Name: parvdm    
-Path: no image path found!
-Time: 2013-10-17 04:06:56.734373
-
-Disp: Memory Control Driver
-Name: vmmemctl  
-Path: \??\c:\program files\common files\vmware\drivers\memctl\vmmemctl.sys
-Time: 2013-10-17 04:06:56.734373
-
-Disp: VMware Tools
-Name: vmtools   
-Path: "c:\program files\vmware\vmware tools\vmtoolsd.exe"
-Time: 2013-10-17 04:06:56.734373
-
-Disp: VMware Physical Disk Helper Service
-Name: vmware physical disk helper service
-Path: "c:\program files\vmware\vmware tools\vmacthlp.exe"
-Time: 2013-10-17 04:06:56.734373
-
-Disp: Google Update Service (gupdate)
-Name: . etadpug
-Path: "c:\program files\google\desktop\install\{0f91adea-a35c-b700-d36c-83378aa58eea}\   \   \\{0f91adea-a35c-b700-d36c-83378aa58eea}\googleupdate.exe" <
-Time: 2013-10-17 11:46:43.680927
-
-python autoreg-parse.py -p userassist -nt goog/NTUSER.DAT 
-
-===================================================
-USER ASSIST
-===================================================
-UEME_CTLSESSION
-UEME_CTLCUACount:ctor
-UEME_UITOOLBAR
-UEME_UITOOLBAR:0x1,120
-UEME_CTLSESSION
-UEME_RUNPIDL:%csidl2%\MSN.lnk
-UEME_RUNPIDL:%csidl2%\Windows Media Player.lnk
-UEME_RUNPIDL:%csidl2%\Windows Messenger.lnk
-UEME_RUNPIDL:%csidl2%\Accessories\Tour Windows XP.lnk
-UEME_RUNPIDL:%csidl2%\Accessories\System Tools\Files and Settings Transfer Wizard.lnk
-UEME_CTLCUACount:ctor
-UEME_RUNCPL
-UEME_RUNCPL:SYSDM.CPL
-UEME_RUNPATH
-UEME_RUNPATH:C:\WINDOWS\system32\tourstart.exe
-UEME_RUNPIDL
-UEME_RUNPIDL:%csidl2%\Accessories\Command Prompt.lnk
-UEME_RUNPIDL:%csidl2%\Accessories
-UEME_RUNPATH:C:\WINDOWS\system32\cmd.exe
+[
+    {
+        "Title": "Services", 
+        "Name": "Abiosdsk", 
+        "Value1": 4, 
+        "Value2": "???", 
+        "Value3": "???", 
+        "Value4": 1, 
+        "Value5": "???", 
+        "LWTime": "2013-03-09 16:40:56.406248"
+    }, 
 <snip>
+    {
+        "Title": "Services", 
+        "Name": "AppMgmt", 
+        "Value1": 2, 
+        "Value2": "%SystemRoot%\\system32\\svchost.exe -k netsvcs", 
+        "Value3": "Application Management", 
+        "Value4": 32, 
+        "Value5": "c:\\windows\\system32\\secur16.dll", 
+        "LWTime": "2014-02-01 11:31:41.965500"
+    }
+<snip>
+]
+
+What? That looks confusing... How can I parse this? I'm not a coder... I'm not either, but it's easy...
+
+import json
+
+print ("\n" + ("=" * 51) + "\nType 2 Auto-start Services\n" + ("=" * 51))
+
+with open('services.json', 'r') as f:
+	data = json.load(f)
+	for tags in data:
+		if "Services" in tags['Title']:
+			if "2" in str(tags['Value1']):
+				print 'Service Name: %s\nImage Path: %s\nServiceDLL: %s\n' % (tags['Name'], tags['Value2'], tags['Value5'])
+		else:
+			pass
+
+===================================================
+Type 2 Auto-start Services
+===================================================
+Service Name: AppMgmt
+Image Path: %SystemRoot%\system32\svchost.exe -k netsvcs
+ServiceDLL: c:\windows\system32\secur16.dll
+
+Service Name: AudioSrv
+Image Path: %SystemRoot%\System32\svchost.exe -k netsvcs
+ServiceDLL: %SystemRoot%\System32\audiosrv.dll
+
+Service Name: Browser
+Image Path: %SystemRoot%\system32\svchost.exe -k netsvcs
+ServiceDLL: %SystemRoot%\System32\browser.dll
+
+This makes things very simple. You can run all of your plugins against 100 systems, and then simply process the raw JSON data as you see fit.
+
+So no more trying to read other people's output. It's simple.... Customize it yourself with 10 - 20 lines of code. I'll also post some of the ones that I find most useful.
 
 
