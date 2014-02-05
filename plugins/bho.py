@@ -1,6 +1,5 @@
 from Registry import Registry
-from collections import OrderedDict
-from helperFunctions import jsonOutput, outputRender
+from helperFunctions import jsonOutput, outputRender, getComputerName
 
 objects_list = []
 BHO_list = []
@@ -9,8 +8,8 @@ header = "Browser Helper Object"
 bho_keys = ["Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects",
             "WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Browser Helper Objects"]
 
-def getPlugin(reg_soft, reg_nt='', reg_sys=''):
-
+def getPlugin(reg_soft, reg_sys, reg_nt=''):
+    computer_name = getComputerName(reg_sys)
     for b in bho_keys:
         try:
             k = reg_soft.open(b)
@@ -43,7 +42,8 @@ def getPlugin(reg_soft, reg_nt='', reg_sys=''):
                                             value_item3 = "???", \
                                             value_item4 = "???", \
                                             value_item5 = "???", \
-                                            lastwrite_time = last_write))
+                                            lastwrite_time = last_write, \
+                                            sys_name = computer_name))
         except Registry.RegistryKeyNotFoundException as e:
             pass
 
