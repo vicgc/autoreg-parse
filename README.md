@@ -20,7 +20,7 @@ Output
 
 The default output for autoreg-parse is now JSON. JSON is much easier to process across multiple systems. Current registry tools don't make it easy. I wanted autoreg-parse to be useful when analyzing multiple systems vs. one. Current reg parsing tools didn't support this so I decided to start writing my own.
 
-See Example.txt - https://github.com/sysforensics/autoreg-parse/blob/master/Example_Output.txt
+See Example.txt - https://raw.github.com/sysforensics/autoreg-parse/master/Example_Output.txt
 
 How to Install
 ===============
