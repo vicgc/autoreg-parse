@@ -2,12 +2,11 @@ from Registry import Registry
 from helperFunctions import jsonOutput, outputRender, getComputerName
 
 objects_list = []
-
+header = "Run Keys"
 
 def getPlugin(reg_soft, reg_nt, reg_sys):
     computer_name = getComputerName(reg_sys)
-    header = "Run Keys"
-    reg_hives = [reg_sys, reg_soft, reg_sys]
+    reg_hives = [reg_sys, reg_soft, reg_nt]
     run_entries =   ["Microsoft\\Windows\\CurrentVersion\\Run",
                      "Microsoft\\Windows\\CurrentVersion\\RunOnce",
                      "Microsoft\\Windows\\CurrentVersion\\RunOnceEx",
