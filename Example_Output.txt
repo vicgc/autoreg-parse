@@ -46,16 +46,20 @@ with open('services.json', 'r') as f:
 Type 2 Auto-start Services
 ===================================================
 Name: AppMgmt
-ImagePath: %SystemRoot%\system32\svchost.exe -k netsvcs
-ServiceDLL: c:\windows\system32\secur16.dll
+ImgPath: %SystemRoot%\system32\svchost.exe -k netsvcs
+SrvDLL: c:\windows\system32\secur16.dll
 
 Name: AudioSrv
-ImagePath: %SystemRoot%\System32\svchost.exe -k netsvcs
-ServiceDLL: %SystemRoot%\System32\audiosrv.dll
+ImgPath: %SystemRoot%\System32\svchost.exe -k netsvcs
+SrvDLL: %SystemRoot%\System32\audiosrv.dll
 
 Name: Browser
-ImagePath: %SystemRoot%\system32\svchost.exe -k netsvcs
-ServiceDLL: %SystemRoot%\System32\browser.dll
+ImgPath: %SystemRoot%\system32\svchost.exe -k netsvcs
+SrvDLL: %SystemRoot%\System32\browser.dll
+
+Name: BthServ
+ImgPath: %SystemRoot%\system32\svchost.exe -k bthsvcs
+SrvDLL: %SystemRoot%\System32\bthserv.dll
 
 This makes things very simple. You can run all of your plugins against 100 systems, 
 and then simply process the raw JSON data as you see fit.
