@@ -35,12 +35,10 @@ import json
 print ("\n" + ("=" * 51) + "\nType 2 Auto-start Services\n" + ("=" * 51))
 with open('services.json', 'r') as f:
 	data = json.load(f)
-	for tags in data:
-		if "Services" in tags['Title']:
-			if "2" in str(tags['Value1']):
-				print 'Name: %s\nImagePath: %s\nServiceDLL: %s\n' % (tags['Name'], \
-																	 tags['Value2'], \
-																	 tags['Value5'])
+	for t in data:
+		if "Services" in t['Title']:
+			if "2" in str(t['Value1']):
+				print 'Name: %s\ImgPath: %s\nSrvDLL: %s\n' % (t['Name'], t['Value2'], t['Value5'])
 		else:
 			pass
 
