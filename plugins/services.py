@@ -1,13 +1,13 @@
 from Registry import Registry
 from collections import OrderedDict
-from helperFunctions import jsonOutput, outputRender, getControlSet
+from helperFunctions import jsonOutput, outputRender, getControlSet, getComputerName
 
 objects_list = []
 service_list = []
 header = "Services"
 
 def getPlugin(reg_sys, reg_nt='', reg_soft=''):
-    
+    computer_name = getComputerName(reg_sys)
     current = getControlSet(reg_sys)
     servicesnames = reg_sys.open('%s\\Services' % (current))
 
@@ -46,5 +46,6 @@ def getPlugin(reg_sys, reg_nt='', reg_soft=''):
                                         value_item3 = display_name, \
                                         value_item4 = type_name, \
                                         value_item5 = service_dll, \
-                                        lastwrite_time = last_write))
+                                        lastwrite_time = last_write,\
+                                        sys_name = computer_name))
     outputRender(objects_list)
