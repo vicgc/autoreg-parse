@@ -5,7 +5,7 @@ objects_list = []
 
 def getPlugin(reg_soft, reg_nt, reg_sys):
 
-    header = "TRADITIONAL \"RUN\" KEYS"
+    header = "Run Keys"
 
     reg_hives = [reg_sys, reg_soft, reg_sys]
     
