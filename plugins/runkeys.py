@@ -1,5 +1,5 @@
 from Registry import Registry
-from controlset import getControlSet
+from helperFunctions import jsonOutput, outputRender, getControlSet
 
 def getPlugin(reg_soft, reg_nt, reg_sys):
 
