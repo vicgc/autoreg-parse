@@ -1,14 +1,13 @@
 from Registry import Registry
-from helperFunctions import jsonOutput, outputRender
+from helperFunctions import jsonOutput, outputRender, getComputerName
 
 objects_list = []
 
+
 def getPlugin(reg_soft, reg_nt, reg_sys):
-
+    computer_name = getComputerName(reg_sys)
     header = "Run Keys"
-
     reg_hives = [reg_sys, reg_soft, reg_sys]
-    
     run_entries =   ["Microsoft\\Windows\\CurrentVersion\\Run",
                      "Microsoft\\Windows\\CurrentVersion\\RunOnce",
                      "Microsoft\\Windows\\CurrentVersion\\RunOnceEx",
@@ -46,7 +45,8 @@ def getPlugin(reg_soft, reg_nt, reg_sys):
                                             value_item3 = "???", \
                                             value_item4 = "???", \
                                             value_item5 = "???", \
-                                            lastwrite_time = last_write))
+                                            lastwrite_time = last_write,\
+                                            sys_name = computer_name))
             except Registry.RegistryKeyNotFoundException as e:
                 pass
 
