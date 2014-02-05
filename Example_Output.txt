@@ -67,4 +67,22 @@ and then simply process the raw JSON data as you see fit.
 So no more trying to read other people's output. It's simple.... 
 Customize it yourself with 10 - 20 lines of code. I'll also post some of the ones that I find most useful.
 
+WHAT???? You don't like JSON output, or the example I gave you? You're stuck in your ways and want CSV?
 
+#Reference http://stackoverflow.com/questions/1871524/convert-from-json-to-csv-using-python
+
+import csv, json, sys
+json_input_file = open(sys.argv[1])
+data = json.load(json_input_file)
+json_input_file.close()
+output = csv.writer(sys.stdout)
+output.writerow(data[0].keys())
+for jdata in data:
+	output.writerow(jdata.values())
+	
+python json2csv.py services.json > mehmeh.csv
+
+sysaudio,Services,2014-02-01 11:29:30.500000,???,1,Microsoft Kernel System Audio Device,system32\drivers\sysaudio.sys,3
+SysmonLog,Services,2013-03-09 16:40:56.468750,???,16,Performance Logs and Alerts,%SystemRoot%\system32\smlogsvc.exe,3
+TapiSrv,Services,2014-02-01 11:29:07.843750,%SystemRoot%\System32\tapisrv.dll,32,Telephony,%SystemRoot%\System32\svchost.exe -k netsvcs,3
+Tcpip,Services,2014-02-01 11:29:07.843750,???,1,TCP/IP Protocol Driver,system32\DRIVERS\tcpip.sys,1
