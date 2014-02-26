@@ -1,22 +1,26 @@
-Auto Registry Parser 
-======================  
+Auto Registry Parser (autoreg-parse) 
+=====================================  
 
-The idea of this started out as one to duplicate Microsoft's autoruns tool to the extent possible with only offline registry hives. Then I started adding extra non-autoruns specific keys. I couldn't think of a better name after that so I just left it the same name. Yeah, yeah, I know...branding, but I figure if it's free and I give it away that doesn't really matter. You can name it what you want once it's downloaded to your desktop.
+The idea of this started out as one to duplicate Microsoft's autoruns tool to the extent possible with only offline registry hives. Then I started adding extra non-autorun keys. I couldn't think of a better name after that so I just left the "auto" part in there. If you don't like the name you can name it what you want once it's downloaded to your desktop.
+
+If you want to add plugins feel free. I would appreciate it actually :)
 
 Purpose/Reason
 ===============
 
 Why not use the tools that already exist?
 
-- Perl is old school. All the new/cools guys/gals are using Python.
-- I wanted to learn to code in Python. What better way than to write a tool in Python?
-- I didn't like the output of some of the other tools. I felt they are too "loud", GUI based, or they didn't work properly. I got pissed one day when a tool kept failing and decided to just write my own.
-- It focuses on quickly identifying common malware persistence locations or malware/actor related locations. It's not billed out as a "traditional forensics" analysis tool. I had malware in mind when I wrote it. On the flip side, you can easily write a function and I will include it. If not, I will get around to it at some point.
+- All the new/cools guys/gals are writing code in Python.
+- I wanted to learn to code in Python better. What better way than to write a tool in Python?
+- I didn't like the output of the alternatives. It's complex and not consistent. It doesn't scale well either if you want to analyze multiple systems.
+- I wanted something that's easy to write plugins for. I personally found the alternatives cryptic.
 
-Example Output
-=================
+Output
+=======
 
-See Example.txt - https://github.com/sysforensics/autoreg-parse/blob/master/Example_Output.txt
+The default output for autoreg-parse is now JSON. JSON is much easier to process across multiple systems. Current registry tools don't make it easy. I wanted autoreg-parse to be useful when analyzing multiple systems vs. one. Current reg parsing tools didn't support this so I decided to start writing my own.
+
+See Example.txt - https://raw.github.com/sysforensics/autoreg-parse/master/Example_Output.txt
 
 How to Install
 ===============
@@ -33,28 +37,28 @@ Python Registry
 - python setup.py build
 - python setup.py install
 
-That should be all you need. It will work in Windows and Linux/OSX. Let me know if you have issues.
+That should be all you need. It will work in Windows and Linux/OSX. Email me at: patrickolsen[at]sysforensics.org if you have issues. I am happy to help.
 
 How-to
 =======
 
 python autoreg-parse.py -h
-
                 usage: autoreg-parse.py [-h] [-nt NTUSER] [-sys SYSTEM] [-soft SOFTWARE]
-                                        [-p PLUGIN [PLUGIN ...]]
-
+                                        [-p PLUGIN [PLUGIN ...]] [-lp]
+                
                 Parse the Windows registry for malware-ish related artifacts.
-
+                
                 optional arguments:
                   -h, --help            show this help message and exit
                   -nt NTUSER, --ntuser NTUSER
-                                        Path to the NTUSER.DAT hive you want parsed
+                                        Path to the NTUSER.DAT hive you want parsed.
                   -sys SYSTEM, --system SYSTEM
-                                        Path to the SYSTEM hive you want parsed
+                                        Path to the SYSTEM hive you want parsed.
                   -soft SOFTWARE, --software SOFTWARE
-                                        Path to the SOFTWARE hive you want parsed
+                                        Path to the SOFTWARE hive you want parsed.
                   -p PLUGIN [PLUGIN ...], --plugin PLUGIN [PLUGIN ...]
-                                        Specify plugin your plugin name
+                                        Specify plugin your plugin name.
+                  -lp, --listplugins    This plugin lists the available plugins.
 
 Todo
 =======
@@ -64,12 +68,8 @@ Key
 - O = Partially done and implemented
 - [ ] = Not started
 
-In no specific order.... It's whatever I feel like doing that day, unless someone needs/wants something sooner vs. later.
+In no specific order....
 
-[O] CLEAN UP THE CODE 
-
-- [x] 12/29/2013 - Added getControlSet functions to reuse and reduce duplication. 
-- [x] 12/29/2013 - Used a dict{} within services vs. a bunch of lists to reduce code.
 
 [ ] Error handling
 
@@ -77,59 +77,27 @@ In no specific order.... It's whatever I feel like doing that day, unless someon
 
 [O] User Assist
 
-- [x] Parser entries
-- [ ] Verify I am not missing anything.
+- [ ] Add counts, etc. to the output. Right now it's just pulling the names.
 
 [O] System and User Information
 
-- [x] Install date
-- [x] OS version
-- [x] Computer name
 - [ ] Last logged on user
 - [ ] Shutdown time
 - [ ] SIDS and User Profile Information
 
-[ ] Run Keys
-
-- [ ] Go back and check and verify i'm not missing anything. 
-- [ ] Verify wow6432 entries.
-
 [O] Services
 
-- [x] 12/29/2013 - Added White list/Baseline feature
-- [ ] Make it so services.txt is optional so it will process it without. Also, make it so you can specify the location of services.txt.
-- [ ] Services - Add image path checking vs. just service name checking for the whitelist/baseline.
-
-[O] Archive Locations
-
-- [X] WinZip - Software\\Nico Mak Computing\\WinZip
-- [ ] WinRar - Software\\WinRAR\\DialogEditHistory\\ArcName
-- [ ] 7zip -   Software\\7-Zip
-
-[ ] Hashing Function
-
-- [X] Write hashing function
-- [ ] Allow the code to run against a disk image and hash the image paths of services, etc.
-- [ ] VT support with returned  hashes from hashing function
+- [ ] Write some JSON parsing code to look for anaomolies
 
 [ ] LastWrite Times
 
-- [X] SysInternals
-- [X] Mount Points
-- [X] Archive Locations
-- [ ] Anymore???
+- [ ] Add last write time to everything and then it can be filtered via JSON parsing.
 
-[X] Modular
+[ ] Output
 
-- [X] Now supports a plugin style feature set where people can write their own plugins. If you write one let me know and I will add it to the repo.
-
-[ ] Program Input/Output
-
-- [ ] Input - Process multiple NTUSER.DAT files
-- [ ] Input - Allow for services.txt to be inputed on the command line (right now it's hard coded)
-- [O] Input - Plugins (See modular section)
-- [ ] Output - CSV
-- [ ] Output - sqlite???
+- [X] JSON is the default
+- [X] CSV -> I've written a json2csv.py file. See the Output Example for details.
+- [ ] json2sqlite?
 
 Thanks to:
 ==============

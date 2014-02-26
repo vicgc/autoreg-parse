@@ -1,3 +1,5 @@
+from Registry import Registry
+
 def getPlugin(reg_soft, reg_sys='', reg_nt=''):
 
     print ("\n" + ("=" * 51) + "\nACTIVE SETUP - INSTALLED COMPONENTS \n" + ("=" * 51))
