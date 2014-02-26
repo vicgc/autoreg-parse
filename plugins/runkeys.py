@@ -40,7 +40,7 @@ def getPlugin(reg_soft, reg_nt, reg_sys):
                     objects_list.append(jsonOutput(header, \
                                             key_item = key_name, \
                                             value_item1 = key_value, \
-                                            value_item2 = "???", \
+                                            value_item2 = k, \
                                             value_item3 = "???", \
                                             value_item4 = "???", \
                                             value_item5 = "???", \
